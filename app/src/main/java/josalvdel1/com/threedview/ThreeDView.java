@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -31,6 +33,8 @@ public class ThreeDView extends TextView implements SensorEventListener {
     private Point center;
     private float yCenter;
     private float xCenter;
+    private int padding = 35;
+    private double factor = 1.1;
 
     public ThreeDView(Context context) {
         super(context);
@@ -61,7 +65,6 @@ public class ThreeDView extends TextView implements SensorEventListener {
         xAxis = event.values[0];
         yAxis = event.values[1];
         zAxis = event.values[2];
-        //setText(Math.absMath.round(x) + " " + Math.round(y) + " " + Math.round(z) + " " );
     }
 
     @Override
@@ -75,23 +78,19 @@ public class ThreeDView extends TextView implements SensorEventListener {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawRect(30, 30, mWidth - 30, mHeight - 30, btnPaint);
         double x = xAxis / 10;
-        Log.d("t", x + "x");
         double y = yAxis / 10;
-        Log.d("t", y + "y");
         double z = zAxis / 10;
-        Log.d("t", z + "z");
-        if (x > 0) {
-            canvas.drawRect(xCenter, 0, (float) (mWidth * x), mHeight, edgePaint);
-        } else {
-            canvas.drawRect((float) (mWidth + mWidth * x), 0, xCenter, mHeight, edgePaint);
+        if (x > 0 && y > 0) {
+            canvas.drawRect(padding, (float) (padding - padding * y), (float) (mWidth - padding + padding * x), mHeight - padding, edgePaint);
+        } else if (x > 0 && y < 0) {
+            canvas.drawRect(padding, padding, (float) (mWidth - padding + padding * x), (float) (mHeight - padding + padding * -y), edgePaint);
+        } else if (x < 0 && y > 0) {
+            canvas.drawRect((float) (padding + padding * x), (float) (padding - padding * y), mWidth - padding, mHeight - padding, edgePaint);
+        } else if (x < 0 && y < 0) {
+            canvas.drawRect((float) (padding + padding * x), padding, mWidth - padding, (float) (mHeight - padding + padding * -y), edgePaint);
         }
-        if (y > 0) {
-            canvas.drawRect(0, (float) (mHeight + mHeight * -y), mWidth, yCenter, edgePaint);
-        } else {
-            canvas.drawRect(0, yCenter, mWidth, (float) (mHeight * -y), edgePaint);
-        }
+        canvas.drawRect(padding, padding, mWidth - padding, mHeight - padding, btnPaint);
         super.onDraw(canvas);
         invalidate();
     }
