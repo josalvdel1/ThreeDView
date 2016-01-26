@@ -82,13 +82,13 @@ public class ThreeDView extends TextView implements SensorEventListener {
         double y = yAxis / 10;
         double z = zAxis / 10;
         if (x > 0 && y > 0) {
-            canvas.drawRect(padding, (float) (padding - padding * y), (float) (mWidth - padding + padding * x), mHeight - padding, edgePaint);
+            canvas.drawRect(padding, (float) (padding - padding * y * factor), (float) (mWidth - padding + padding * x* factor), mHeight - padding, edgePaint);
         } else if (x > 0 && y < 0) {
-            canvas.drawRect(padding, padding, (float) (mWidth - padding + padding * x), (float) (mHeight - padding + padding * -y), edgePaint);
+            canvas.drawRect(padding, padding, (float) (mWidth - padding + padding * x* factor), (float) (mHeight - padding + padding * -y* factor), edgePaint);
         } else if (x < 0 && y > 0) {
-            canvas.drawRect((float) (padding + padding * x), (float) (padding - padding * y), mWidth - padding, mHeight - padding, edgePaint);
+            canvas.drawRect((float) (padding + padding * x* factor), (float) (padding - padding * y* factor), mWidth - padding, mHeight - padding, edgePaint);
         } else if (x < 0 && y < 0) {
-            canvas.drawRect((float) (padding + padding * x), padding, mWidth - padding, (float) (mHeight - padding + padding * -y), edgePaint);
+            canvas.drawRect((float) (padding + padding * x* factor), padding, mWidth - padding, (float) (mHeight - padding + padding * -y* factor), edgePaint);
         }
         canvas.drawRect(padding, padding, mWidth - padding, mHeight - padding, btnPaint);
         super.onDraw(canvas);
